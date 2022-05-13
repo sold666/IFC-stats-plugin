@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QDir>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,7 +18,10 @@ public:
 
 public slots:
     void addTab();
-
+    void browse();
+    void load();
+    void closeTab(int index);
+    //void slotCloseTab();
 private:
     Ui::MainWindow *ui;
 };

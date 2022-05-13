@@ -14,9 +14,25 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(TS_FILES IFCPlugin_en_US.ts icon.ico)
+set(TS_FILES IFCPlugin_en_US.ts icon.ico example.ifc)
 
 set(CMAKE_AUTORCC ON)
+
+#set(SOURCES
+#    src/main.cpp
+#    src/whatever.cpp)
+#set(HEADERS
+#    include/whatever.h)
+#add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
+#target_include_directories(${PROJECT_NAME} PUBLIC include)
+
+include_directories(
+    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src
+    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp
+    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp/model
+)
+
+file(GLOB_RECURSE SRC "D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp/*.cpp")
 
 set(PROJECT_SOURCES
         main.cpp
@@ -25,6 +41,7 @@ set(PROJECT_SOURCES
         mainwindow.ui
         t.rc
         ${TS_FILES}
+        ${SRC}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -32,10 +49,6 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
     )
-# Define target properties for Android with Qt 6 as:
-#    set_property(TARGET IFCPlugin APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
-#                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
-# For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
     qt_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 else()
@@ -43,18 +56,17 @@ else()
         add_library(IFCPlugin SHARED
             ${PROJECT_SOURCES}
         )
-# Define properties for Android with Qt 5 after find_package() calls as:
-#    set(ANDROID_PACKAGE_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/android")
     else()
         add_executable(IFCPlugin
             ${PROJECT_SOURCES}
+            ${SRC}
         )
     endif()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets D:/GotovyiProekt/ifcplusplus-1.1/IfcPlusPlus/bin/IfcPlusPlusd.dll)
 
 set_target_properties(IFCPlugin PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

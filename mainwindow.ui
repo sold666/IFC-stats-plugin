@@ -20,6 +20,12 @@
    <layout class="QVBoxLayout" name="verticalLayout_5">
     <item>
      <widget class="QTabWidget" name="tabWidget">
+      <property name="font">
+       <font>
+        <family>Roboto</family>
+        <bold>true</bold>
+       </font>
+      </property>
       <property name="styleSheet">
        <string notr="true">QTabWidget::pane { /* The tab widget frame */
     border-top: 2px solid #333333;
@@ -78,9 +84,21 @@ QTabBar::tab:only-one {
 }</string>
       </property>
       <property name="currentIndex">
-       <number>0</number>
+       <number>2</number>
+      </property>
+      <property name="tabsClosable">
+       <bool>true</bool>
+      </property>
+      <property name="movable">
+       <bool>false</bool>
       </property>
       <widget class="QWidget" name="tab_3">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <bold>true</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Tab 1</string>
        </attribute>
@@ -242,6 +260,12 @@ QTabBar::tab:only-one {
        </layout>
       </widget>
       <widget class="QWidget" name="tab_4">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <bold>true</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Tab 2</string>
        </attribute>
@@ -403,6 +427,12 @@ QTabBar::tab:only-one {
        </layout>
       </widget>
       <widget class="QWidget" name="tab_5">
+       <property name="font">
+        <font>
+         <family>Roboto</family>
+         <bold>true</bold>
+        </font>
+       </property>
        <attribute name="title">
         <string>Tab 3</string>
        </attribute>
@@ -569,6 +599,12 @@ QTabBar::tab:only-one {
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
        <widget class="QPushButton" name="pushButton">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Choose file</string>
         </property>
@@ -576,6 +612,12 @@ QTabBar::tab:only-one {
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_2">
+        <property name="font">
+         <font>
+          <family>Roboto</family>
+          <bold>true</bold>
+         </font>
+        </property>
         <property name="text">
          <string>Load</string>
         </property>

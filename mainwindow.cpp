@@ -3,6 +3,9 @@
 #include <QTableWidget>
 #include <QToolButton>
 #include <QWidget>
+#include <QFileDialog>
+#include <QLineEdit>
+#include <QTreeWidget>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -10,11 +13,9 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     //TODO: color headers
-    //TODO: delete tabs
     //TODO: when tab was added table should appear
     //TODO: add new rows by button
-    //TODO: add choose file button
-    //TODO: add load file button which must parse ifc
+
 
     /*ui->tableWidget->horizontalHeader()->setStyleSheet("background-color:#666666;");
     ui->tableWidget->verticalHeader()->setStyleSheet("background-color:#666666;");
@@ -23,24 +24,35 @@ MainWindow::MainWindow(QWidget *parent)
     tb->setText("+");
     tb->setAutoRaise(true);
     tb->setFixedSize(46, 20);
-
     connect(tb, SIGNAL(clicked()), this, SLOT(addTab()));
     ui->tabWidget->addTab(new QWidget(), QString());
-    //ui->tabWidget->addTab(new QLabel(), QString());
     ui->tabWidget->setTabEnabled(3, false);
     ui->tabWidget->tabBar()->setTabButton(3, QTabBar::RightSide, tb);
+
+    connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
+
+    connect(ui->pushButton, SIGNAL(clicked()), SLOT(browse()));
 }
 
-MainWindow::~MainWindow()
-{
+MainWindow::~MainWindow() {
     delete ui;
 }
 
-void MainWindow::addTab()
-{
+void MainWindow::addTab() {
     static int number = 3;
     QWidget *tab = new QWidget(this);
-
     QString tabName = QString("Tab %4").arg(++number);
     ui->tabWidget->insertTab( ui->tabWidget->count() - 1, tab, tabName);
+}
+
+void MainWindow::closeTab(int index) {
+   ui->tabWidget->removeTab(index);
+}
+
+void MainWindow::browse() {
+    QString fileName = QFileDialog::getOpenFileName(this, tr("Open File"), "C:/", tr("IFC Files (*.ifc)"));
+}
+
+void MainWindow::load() {
+    //TODO: add load file button which must parse ifc
 }
