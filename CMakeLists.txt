@@ -27,12 +27,12 @@ set(CMAKE_AUTORCC ON)
 #target_include_directories(${PROJECT_NAME} PUBLIC include)
 
 include_directories(
-    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src
-    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp
-    D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp/model
+    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src
+    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp
+    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp/model
 )
 
-file(GLOB_RECURSE SRC "D:/Qt_pr/IFCPlugin/IfcPlusPlus/src/ifcpp/*.cpp")
+file(GLOB_RECURSE SRC "PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp/*.cpp")
 
 set(PROJECT_SOURCES
         main.cpp
@@ -66,7 +66,7 @@ else()
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets D:/GotovyiProekt/ifcplusplus-1.1/IfcPlusPlus/bin/IfcPlusPlusd.dll)
+target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PATH_TO_IFCPLUSPLUS/IfcPlusPlus/bin/IfcPlusPlusd.dll)
 
 set_target_properties(IFCPlugin PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com
