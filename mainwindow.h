@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QDir>
+#include <QTableWidget>
+#include <QWidget>
+#include <QGridLayout>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,7 +22,7 @@ public:
 public slots:
     void addTab();
     void browse();
-    void load();
+    void exportToExcel();
     void closeTab(int index);
     //void slotCloseTab();
 
@@ -27,5 +30,7 @@ public slots:
 
 private:
     Ui::MainWindow *ui;
+    std::vector<std::pair<QWidget*, QTableWidget*>> tabTable;
+    QGridLayout *layout;
 };
 #endif // MAINWINDOW_H
