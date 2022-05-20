@@ -41,7 +41,8 @@ set(PROJECT_SOURCES
         mainwindow.ui
         t.rc
         ${TS_FILES}
-        ${SRC}
+        ${SRC_CPP}
+        ${SRC_H}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -59,7 +60,8 @@ else()
     else()
         add_executable(IFCPlugin
             ${PROJECT_SOURCES}
-            ${SRC}
+            #${SRC_CPP}
+            #${SRC_H}
         )
     endif()
 

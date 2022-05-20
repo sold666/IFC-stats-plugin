@@ -14,8 +14,6 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     //TODO: color headers
     //TODO: when tab was added table should appear
-    //TODO: add new rows by button
-
 
     /*ui->tableWidget->horizontalHeader()->setStyleSheet("background-color:#666666;");
     ui->tableWidget->verticalHeader()->setStyleSheet("background-color:#666666;");
@@ -32,6 +30,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
     connect(ui->pushButton, SIGNAL(clicked()), SLOT(browse()));
+    ui->tableWidget->setRowCount(0);
 }
 
 MainWindow::~MainWindow() {
@@ -55,4 +54,18 @@ void MainWindow::browse() {
 
 void MainWindow::load() {
     //TODO: add load file button which must parse ifc
+}
+
+void MainWindow::addRow(const std::string& name, int quantity)
+{
+    const QString qstr = QString::fromStdString(name);
+    const QString qcount = QString::number(quantity);
+
+    ui->tableWidget->insertRow( ui->tableWidget->rowCount() );
+    ui->tableWidget->setItem( ui->tableWidget->rowCount() - 1,
+                             0,
+                             new QTableWidgetItem(qstr));
+    ui->tableWidget->setItem( ui->tableWidget->rowCount() - 1,
+                             1,
+                             new QTableWidgetItem(qcount));
 }

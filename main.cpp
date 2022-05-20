@@ -4,8 +4,16 @@
 #include <QLocale>
 #include <QTranslator>
 #include <QTableWidget>
+
 #include <unordered_set>
 #include <memory>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <map>
+#include <sstream>
+#include <typeinfo>
+
 #include <ifcpp/IFC4/include/IfcBuildingStorey.h>
 #include <ifcpp/IFC4/include/IfcGloballyUniqueId.h>
 #include <ifcpp/IFC4/include/IfcLabel.h>
@@ -17,6 +25,8 @@
 #include <ifcpp/model/BuildingModel.h>
 #include <ifcpp/reader/AbstractReader.h>
 #include <ifcpp/reader/ReaderSTEP.h>
+#include <ifcpp/IFC4/include/IfcBuildingElement.h>
+#include <ifcpp/model/AttributeObject.h>
 
 //#include <unordered_set>
 //#include <memory>
@@ -55,38 +65,34 @@ int main(int argc, char *argv[])
 
     w.show();
 
-    // 1: create an IFC model and a reader for IFC files in STEP format:
     shared_ptr<BuildingModel> ifc_model(new BuildingModel());
     shared_ptr<ReaderSTEP> step_reader(new ReaderSTEP());
 
     // 2: load the model:
-    step_reader->loadModelFromFile( L"example.ifc", ifc_model);
+    //std::string path(QCoreApplication::arguments().at(1));
+    std::string path(argv[1]);
+    std::wstring widestr = std::wstring(path.begin(), path.end());
+    step_reader->loadModelFromFile(widestr, ifc_model);
 
-    // 3: get a flat map of all loaded IFC entities:
     const std::map<int, shared_ptr<BuildingEntity> >& map_entities = ifc_model->getMapIfcEntities();
+    std::map<std::string, int> counter;
+    std::string classNames;
 
-    for (auto it : map_entities)
+    for (const auto &it : map_entities)
     {
         shared_ptr<BuildingEntity> entity = it.second;
-
-        // check for certain type of the entity:
-        shared_ptr<IfcBuildingStorey> ifc_storey = dynamic_pointer_cast<IfcBuildingStorey>(entity);
-        if (ifc_storey)
-        {
-            // access attributes:
-            if (ifc_storey->m_GlobalId)
-            {
-                std::wcout << L"found IfcBuildingStorey entity with GUID: " << ifc_storey->m_GlobalId->m_value << std::endl;
-            }
+        if (dynamic_cast<IfcProduct*>(entity.get())) {
+            std::string entityСlassName = entity->className();
+            classNames += entityСlassName + " ";
+            //std::cout << entityСlassName << std::endl;
         }
     }
-
-    // 4: traverse tree structure of model, starting at root object (IfcProject)
-    shared_ptr<IfcProject> ifc_project = ifc_model->getIfcProject();
-    std::unordered_set<int> set_visited;
-    shared_ptr<MyIfcTreeItem> root_item = resolveTreeItems(ifc_project, set_visited);
-
-    // you can access the model as a flat map (step 3), or a tree (step 4), depending on your requirements
-
+    std::istringstream ist(classNames);
+    for (std::string s; ist >> s; ++counter[s]);
+    for (const auto &[name, quantity] : counter)
+    {
+        w.addRow(name, quantity);
+        //std::cout << name << " => " << quantity << std::endl;
+    }
     return a.exec();
 }

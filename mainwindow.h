@@ -22,6 +22,9 @@ public slots:
     void load();
     void closeTab(int index);
     //void slotCloseTab();
+
+    void addRow(const std::string& , int);
+
 private:
     Ui::MainWindow *ui;
 };
