@@ -11,8 +11,8 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
-find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
+find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets AxContainer LinguistTools)
+find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets AxContainer LinguistTools)
 
 set(TS_FILES IFCPlugin_en_US.ts icon.ico example.ifc)
 
@@ -26,23 +26,26 @@ set(CMAKE_AUTORCC ON)
 #add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
 #target_include_directories(${PROJECT_NAME} PUBLIC include)
 
+set(PATH_TO_IFCPLUSPLUS "C:/IfcPlugin/IFC-stats-plugin")
+
 include_directories(
-    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src
-    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp
-    PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp/model
+    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src
+    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp
+    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp/model
 )
 
-file(GLOB_RECURSE SRC "PATH_TO_IFCPLUSPLUS/IfcPlusPlus/src/ifcpp/*.cpp")
+file(GLOB_RECURSE SRC ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp/*.cpp)
 
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
         mainwindow.ui
+        ExcelExportHelper.h
+        ExcelExportHelper.cpp
         t.rc
         ${TS_FILES}
-        ${SRC_CPP}
-        ${SRC_H}
+        ${SRC}
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
@@ -60,15 +63,14 @@ else()
     else()
         add_executable(IFCPlugin
             ${PROJECT_SOURCES}
-            #${SRC_CPP}
-            #${SRC_H}
         )
     endif()
 
     qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
 endif()
 
-target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets PATH_TO_IFCPLUSPLUS/IfcPlusPlus/bin/IfcPlusPlusd.dll)
+target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(IFCPlugin PRIVATE Qt${QT_VERSION_MAJOR}::AxContainer)
 
 set_target_properties(IFCPlugin PROPERTIES
     MACOSX_BUNDLE_GUI_IDENTIFIER my.example.com

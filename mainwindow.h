@@ -32,5 +32,7 @@ private:
     Ui::MainWindow *ui;
     std::vector<std::pair<QWidget*, QTableWidget*>> tabTable;
     QGridLayout *layout;
+
+    std::map<std::string, int> counter;
 };
 #endif // MAINWINDOW_H

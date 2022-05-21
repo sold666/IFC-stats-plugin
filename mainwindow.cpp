@@ -21,6 +21,8 @@
 #include <ifcpp/IFC4/include/IfcBuildingElement.h>
 #include <ifcpp/model/AttributeObject.h>
 
+#include <ExcelExportHelper.h>
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -44,6 +46,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->tabWidget, SIGNAL(tabCloseRequested(int)), this, SLOT(closeTab(int)));
 
     connect(ui->pushButton, SIGNAL(clicked()), SLOT(browse()));
+    connect(ui->pushButton_2, SIGNAL(clicked()), SLOT(exportToExcel()));
     ui->tableWidget->setRowCount(0);
     ui->tableWidget->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
@@ -93,7 +96,7 @@ void MainWindow::browse() {
     step_reader->loadModelFromFile(widestr, ifc_model);
 
     const std::map<int, shared_ptr<BuildingEntity> >& map_entities = ifc_model->getMapIfcEntities();
-    std::map<std::string, int> counter;
+    counter.clear();
     std::string classNames;
 
     //IfcBuildingElement
@@ -112,7 +115,32 @@ void MainWindow::browse() {
 }
 
 void MainWindow::exportToExcel() {
-    //TODO: export to excel
+
+    //TODO: make quantity cells in excel of type "numerical"
+
+    QString fileName = QFileDialog::getSaveFileName(this, tr("Save File"), "C:\\", tr("Excel Files (*.xlsx)"));
+    if (!fileName.contains(".xlsx")) {
+        return;
+    }
+    std::string s = fileName.toStdString();
+    std::replace( s.begin(), s.end(), '/', '\\');
+    fileName = QString::fromStdString(s);
+
+    ExcelExportHelper helper;
+
+    helper.SetCellValue(1,1,"Model name");
+    helper.SetCellValue(1,2,"Quantity");
+    int i = 2;
+    for (const auto &[name, quantity] : counter) {
+        const QString qstr = QString::fromStdString(name);
+        const QString qcnt = QString::number(quantity);
+
+        helper.SetCellValue(i,1,qstr);
+        helper.SetCellValue(i,2,qcnt);
+        i++;
+    }
+
+    helper.SaveAs(fileName);
 }
 
 void MainWindow::addRow(const std::string& name, int quantity)
