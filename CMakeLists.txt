@@ -14,37 +14,23 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets AxContainer LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets AxContainer LinguistTools)
 
-set(TS_FILES IFCPlugin_en_US.ts icon.ico example.ifc)
-
 set(CMAKE_AUTORCC ON)
 
-#set(SOURCES
-#    src/main.cpp
-#    src/whatever.cpp)
-#set(HEADERS
-#    include/whatever.h)
-#add_executable(${PROJECT_NAME} ${SOURCES} ${HEADERS})
-#target_include_directories(${PROJECT_NAME} PUBLIC include)
-
-set(PATH_TO_IFCPLUSPLUS "C:/IfcPlugin/IFC-stats-plugin")
-
 include_directories(
-    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src
-    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp
-    ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp/model
+    IfcPlusPlus/src
+    IfcPlusPlus/src/ifcpp
+    IfcPlusPlus/src/ifcpp/model
 )
 
-file(GLOB_RECURSE SRC ${PATH_TO_IFCPLUSPLUS}/IfcPlusPlus/src/ifcpp/*.cpp)
+file(GLOB_RECURSE SRC IfcPlusPlus/src/ifcpp/*.cpp)
 
 set(PROJECT_SOURCES
         main.cpp
         mainwindow.cpp
         mainwindow.h
-        mainwindow.ui
         ExcelExportHelper.h
         ExcelExportHelper.cpp
         t.rc
-        ${TS_FILES}
         ${SRC}
 )
 
